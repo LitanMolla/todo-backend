@@ -18,8 +18,17 @@ const getTodos = async (req,res)=>{
 const deleteTodo = async (req,res)=>{
     const {id} = req.params
     await Todo.findByIdAndDelete({_id:id})
-    console.log(id)
     res.send({success:true,message: "Todo Deleted"})
 }
-
-module.exports = { createTodo , getTodos, deleteTodo}
+const updateTodo = async = (req,res)=>{
+    const {id} = req.params
+    const { task, priority } = req.body
+    const fileType = req?.file?.mimetype.split('/')[0]
+    const fileUrl = req?.file?.path
+    if (!task||!priority) {
+        return res.send({success: false, message: 'All feild are required'})
+    }
+    Todo.findByIdAndUpdate({_id:id},{ task: task, priority: priority, path: {type: fileType, url: fileUrl} })
+    res.send({success: true, message: "Todo updated successfully"})
+}
+module.exports = { createTodo , getTodos, deleteTodo,updateTodo}
