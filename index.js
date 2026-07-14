@@ -3,11 +3,12 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const multer = require('multer')
 const { createTodo, getTodos, deleteTodo, updateTodo } = require('./controllers/todoController')
+const dbConnect = require('./config/dbConfig')
 const app = express()
 app.use(express.json())
 app.use(cors())
 app.use('/upload',express.static('upload'))
-mongoose.connect('mongodb+srv://todoapp:todoapp@cluster0.eluznep.mongodb.net/todoapp?appName=Cluster0').then(() => { console.log(`Database connected successfully`) })
+dbConnect()
 const storage = multer.diskStorage({
     destination: (req,file,cb)=>{
         cb(null,'./upload')
